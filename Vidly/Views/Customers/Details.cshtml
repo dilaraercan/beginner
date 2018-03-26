@@ -6,3 +6,10 @@
 
 <h2>@Model.Name</h2> @*we returned the model names not an ordinary text*@
 
+<ul>
+    <li>@Model.MembershipType.MembershipName</li>
+    @if (Model.bDay != null)
+    {
+        <li>@Model.bDay</li>
+    }
+</ul>  

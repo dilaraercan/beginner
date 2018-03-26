@@ -16,15 +16,15 @@ else
         <thead>
             <tr>
                 <th>Customer</th>
+                <th>Membership Name</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var customer in Model)
             {
                 <tr>
-                    <td>
-                        @Html.ActionLink(customer.Name,"Details","Customers",new {id=customer.Id},null) @*details ve id'li kısım*@
-                    </td>
+                    <td>@Html.ActionLink(customer.Name,"Edit","Customers",new {id=customer.Id},null) </td> @*the 4th parameter is sent to Edit*@
+                    <td>@customer.MembershipType.MembershipName</td> 
                 </tr>
             }
         </tbody>

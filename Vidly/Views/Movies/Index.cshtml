@@ -1,23 +1,26 @@
 ﻿@model IEnumerable<Vidly.Models.Movie>
-@{
-    ViewBag.Title = "Movies";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        ViewBag.Title = "Movies";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-<h2>Movies</h2>
-<table class=" table table-bordered table-hover">
-       <thead>
-        <tr>
-            <th>Movie</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var movie in Model)
-        {
+    <h2>Movies</h2>
+    <table class=" table table-bordered table-hover">
+        <thead>
             <tr>
-                <td>@movie.Name</td>@*it again returns every movie name in a table view takes it from the enumarable list*@
+                <th>Movie</th>
+                <th>Genre</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(movie.Name,"MovieDetails","Movies",new {id=movie.Id},null)</td>
+                    <td>@movie.Genre.GenreName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
+    
