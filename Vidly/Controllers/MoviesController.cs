@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
-using Vidly.ViewModels;
 using System.Data.Entity;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -22,6 +22,35 @@ namespace Vidly.Controllers
         {
             _context.Dispose();
         }
+        public ViewResult New()//we have created viewmodel to bind two models
+        {
+            var genreIds = _context.GenreIds.ToList();
+
+            var viewModel = new MovieFormViewModel
+            {
+                GenreIds = genreIds
+            };
+            return View("NewMovie", viewModel);
+        }
+
+        [HttpPost]//this is to submit data to a specified resource
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+                _context.Movies.Add(movie);
+            else
+            {
+                var movieInDb = _context.Movies.Single(c => c.Id == movie.Id);
+
+                movieInDb.Name = movie.Name;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.Stock = movie.Stock;
+            }
+            _context.SaveChanges();//save to the Db
+
+            return RedirectToAction("Index", "Movies");//redirected to the movies index view 
+        }
 
         public ViewResult Index()//index: açılış sayfasında getmovies methodu return
         {
@@ -34,22 +63,31 @@ namespace Vidly.Controllers
         {
             var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id);
 
-            if(movie == null)
+            if (movie == null)
             {
                 return HttpNotFound();
             }
             return View(movie);
         }
-     /*   private IEnumerable<Movie> GetMovies()
+        public ActionResult Edit(int id)
         {
-            return new List<Movie>
+            var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
+
+            if (movie == null)
+                return HttpNotFound();
+
+            var viewModel = new MovieFormViewModel
             {
-                new Movie{ Id=1,Name="Shrek"},
-                new Movie{Id=2,Name="Wall-e"}
+                Movie = movie,
+                GenreIds = _context.GenreIds.ToList()
             };
-        }*/ 
-        //GET: Movies/Random 
-        public ActionResult Random()//random döndürülecek
+
+            return View("NewMovie", viewModel);
+        }
+
+    }
+}
+        /*public ActionResult Random()//random döndürülecek
         {
             var movie = new Movie() { Name = "Shrek" };
             var customers = new List<Customer>
@@ -63,7 +101,6 @@ namespace Vidly.Controllers
                 Customers = customers
             };
             return View(ViewModel);
-        }
+        }*/ 
 
-    }
-}
+    
