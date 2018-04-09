@@ -28,14 +28,25 @@ namespace Vidly.Controllers
 
             var viewModel = new MovieFormViewModel
             {
+                Movie = new Movie(),
                 GenreIds = genreIds
             };
             return View("NewMovie", viewModel);
         }
 
         [HttpPost]//this is to submit data to a specified resource
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if(!ModelState.IsValid)//change the flow
+            {
+                var viewModel = new MovieFormViewModel
+                {
+                    Movie = movie,
+                    GenreIds = _context.GenreIds.ToList()
+                };
+                return View("NewMovie", viewModel);//if its not valid, it returns to the form again
+            }
             if (movie.Id == 0)
                 _context.Movies.Add(movie);
             else

@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Vidly.Models;
 
-namespace Vidly.Models
+namespace Vidly.Dtos
 {
-    public class Movie 
+    public class MovieDto
     {
         public int Id { get; set; }
 
         [Required]
+        [StringLength(255)]
         public String Name { get; set; }
-        public Genre Genre { get; set; }//binded genre and movie classes
 
-        [Display(Name = "Genre Type")]
+        [Required]
         public byte GenreId { get; set; }//its the foreign key
 
-        [Display(Name = "Date of Release")]
         public DateTime? ReleaseDate { get; set; }//the release date of the movie
 
-        [Display(Name = "Date of Addition")]
         public DateTime? AddDate { get; set; }//the addition date of the movie
 
         [Range(0, 20)]
         public int Stock { get; set; }//shows how many items are available in stock
-
     }
 }

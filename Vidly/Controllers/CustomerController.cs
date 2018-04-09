@@ -9,11 +9,11 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
-    public class CustomersController : Controller
+    public class CustomerController : Controller
     {
         private ApplicationDbContext _context;
 
-        public CustomersController()
+        public CustomerController()
         {
             _context = new ApplicationDbContext();
         }
@@ -27,17 +27,30 @@ namespace Vidly.Controllers
 
             var viewModel = new CustomerFormViewModel
             {
+                Customer = new Customer(),
                 MembershipTypes = membershipTypes
             };
-            return View("CustomerForm",viewModel);
+            return View("CustomerForm", viewModel);
         }
 
         [HttpPost]//this is to submit data to a specified resource
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
-            if(customer.Id == 0)//new customer
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new CustomerFormViewModel//added a validation to customer
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+                if (customer.Id == 0)//new customer
                 _context.Customers.Add(customer); //now saved to memory
-            else//already existing; update
+                else//already existing; update
             {
                 var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
 
