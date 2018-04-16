@@ -19,6 +19,8 @@ namespace Vidly.Dtos
 
         public byte MembershipTypeId { get; set; }//foreign key
 
+        public MembershipTypeDto MembershipType { get; set; }
+
         //[Min18YearsIfAMember]
         public DateTime? bDay { get; set; }//without get set its not implemented in db
     }
