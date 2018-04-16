@@ -9,11 +9,11 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
-    public class CustomerController : Controller
+    public class CustomersController : Controller
     {
         private ApplicationDbContext _context;
 
-        public CustomerController()
+        public CustomersController()
         {
             _context = new ApplicationDbContext();
         }
@@ -63,15 +63,12 @@ namespace Vidly.Controllers
             }
             _context.SaveChanges();//saved to the DB
 
-            return RedirectToAction("Index", "Customers"); //redirected to the Index page 
+            return RedirectToAction("Index", "Customer"); //redirected to the Index page 
         }
 
         public ViewResult Index()//viewresult is a subtype of actionresult this method uses polymorp
         {
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList();//get all the customers from the database
-
-            return View(customers);//its a deferred execution if tolist is not included
-
+            return View();//we are using ajax for sending data
         }   
 
         public ActionResult Details(int id)//kullanıcı url'ye id girdi onu aldı enum zaten onu sıraladı int'e göre
