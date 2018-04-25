@@ -18,6 +18,8 @@ namespace Vidly.Dtos
         [Required]
         public byte GenreId { get; set; }//its the foreign key
 
+        public GenreDto Genre { get; set; }
+
         public DateTime? ReleaseDate { get; set; }//the release date of the movie
 
         public DateTime? AddDate { get; set; }//the addition date of the movie

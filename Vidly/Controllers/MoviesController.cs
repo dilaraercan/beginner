@@ -65,9 +65,7 @@ namespace Vidly.Controllers
 
         public ViewResult Index()//index: açılış sayfasında getmovies methodu return
         {
-            var movies = _context.Movies.Include(c => c.Genre).ToList();
-
-            return View(movies);
+            return View();
         }
 
         public ActionResult MovieDetails(int id)
